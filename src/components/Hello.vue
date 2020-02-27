@@ -34,10 +34,14 @@
   import axios from 'axios'
   export default {
     name: 'hello',
-    computed: {
-      host () {
-        return window.location.hostname
-      }
+    created: function () {
+      const that = this
+      return axios.get(`static/config.json`)
+        .then(resp => {
+          that.back_host = resp.data.BACK_HOST
+          that.back_port = resp.data.BACK_PORT
+          console.log('this.back_host : ' + that.back_host + ' / this.back_port : ' + that.back_port)
+        })
     },
     methods: {
       switchOnline (online) {
@@ -49,20 +53,20 @@
       clearHello () {
         this.hello_count = 0
         if (this.online) {
-          return axios.delete(`http://${this.host}:8081/hello`)
+          return axios.delete(`http://${this.back_host}:${this.back_port}/hello`)
             .then(this.fetchHellos)
         }
       },
       fetchHellos () {
         const that = this
-        return axios.get(`http://${this.host}:8081/hello`)
+        return axios.get(`http://${this.back_host}:${this.back_port}/hello`)
           .then(resp => {
             that.hello_count = parseInt(resp.data.hello_count)
           })
       },
       addHello () {
         if (this.online) {
-          return axios.post(`http://${this.host}:8081/hello`)
+          return axios.post(`http://${this.back_host}:${this.back_port}/hello`)
             .then(this.fetchHellos)
         } else {
           this.hello_count += 1

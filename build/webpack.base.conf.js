@@ -2,6 +2,7 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -18,6 +19,16 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  plugins: [
+    // copy static config
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../config/config.json'),
+        to: path.resolve(__dirname, '../dist/static'),
+        ignore: ['.*']
+      }
+    ])
+  ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
