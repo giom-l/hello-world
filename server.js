@@ -38,7 +38,9 @@ app.get('/hello', function (req, res) {
   })
 })
 
-const server = app.listen(8081, function () {
+let listen_port = process.env['LISTEN_PORT'] || 8081
+
+const server = app.listen(listen_port, function () {
 
   const host = server.address().address
   const port = server.address().port
