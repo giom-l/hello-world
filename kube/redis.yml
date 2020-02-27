@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cactus-redis
+  name: cactus-redis 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cactus-redis 
+  template:
+    metadata:
+      labels:
+        app: cactus-redis 
+    spec:
+      containers:
+      - image: redis
+        name: cactus-redis
+        ports:
+        - containerPort: 6379
+

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: cactus-front
+  name: cactus-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cactus-front
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: cactus-front
+    spec:
+      containers:
+      - image: gocho/cactus:front
+        name: cactus-front
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name : back-infos
+          mountPath: /usr/share/nginx/html/static/config.json
+          subPath: config.json
+      volumes:
+        - name: back-infos
+          configMap:
+            name: back-infos

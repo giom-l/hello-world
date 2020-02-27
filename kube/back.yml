@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cactus-back
+  name: cactus-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cactus-back
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: cactus-back
+    spec:
+      containers:
+      - image: gocho/cactus:back
+        name: cactus-back
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+        env:
+        - name: REDIS_HOST
+          #          value: cactus-redis-svc
+          valueFrom:
+            configMapKeyRef:
+              name: redis-host
+              key: REDIS_HOST
+
